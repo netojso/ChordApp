@@ -12,22 +12,63 @@ interface ResponseChordAPI {
   tones: string;
 }
 
+
+interface Chord {
+  strings: string[],
+  fingering: string[],
+  chordName: string,
+  tones: string[]
+}
+
 const App: React.FC = () => {
-  useEffect(() => {}, []);
+  const [chord, setChord] = useState({} as Chord);
+  const [chordName, setChordName] = useState("C");
 
-  const [chord, setChord] = useState({} as ResponseChordAPI);
+  useEffect(() => {
+    async function fetchChordAPI() {
 
-  async function fetchChordAPI(params: String) {
-    const response = await API.get(`${params}`);
+      if(chordName === "") return;
 
-    setChord(response.data[0]);
-  }
+      const { data } = await API.get<ResponseChordAPI[]>(`${chordName}`);
+  
+      if(data.length > 0) {
+
+        const newChord: Chord = {
+          strings: data[0].strings.split(" "),
+          fingering: data[0].fingering.split(" "),
+          chordName: data[0].chordName,
+          tones: data[0].tones.split(",")
+        };
+  
+        console.log(newChord);
+
+        setChord(newChord);
+      }
+      
+    }
+
+    fetchChordAPI();
+
+  }, [chordName])
+
 
   function findChord(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter") {
-      fetchChordAPI(e.currentTarget.value.toUpperCase());
+      e.currentTarget.blur();
+      setChordName(e.currentTarget.value.toUpperCase())
     }
   }
+
+  function formatFingering(index: number) {
+      const isNumber = !isNaN(Number(chord.fingering[index]));
+
+      if(isNumber){
+        return Number(chord.fingering[index]);
+      } 
+
+      return "";
+  }
+  
 
   return (
     <Container>
@@ -37,20 +78,29 @@ const App: React.FC = () => {
           findChord(e);
         }}
       />
-      <Chords>
-        <Strings fret={1} string="43px" />
-        <Strings fret={3} string="71px" />
-        <Strings fret={3} string="98px" />
-        <Strings fret={2} string="125px" />
-        <Strings fret={1} string="153px" />
-        <Strings fret={1} string="181px" />
-      </Chords>
-      <Notes>
-        <div className="notes">C</div>
-        <div className="notes">E</div>
-        <div className="notes">G</div>
-        <div className="notes">7</div>
-      </Notes>
+      {Object.keys(chord).length !== 0 ? (
+          <>
+            <Chords>
+            <Strings fret={Number(chord.strings[0])} string="43px">{formatFingering(0)}</Strings>
+            <Strings fret={Number(chord.strings[1])} string="71px">{formatFingering(1)}</Strings>
+            <Strings fret={Number(chord.strings[2])} string="98px">{formatFingering(2)}</Strings>
+            <Strings fret={Number(chord.strings[3])} string="125px">{formatFingering(3)}</Strings>
+            <Strings fret={Number(chord.strings[4])} string="153px">{formatFingering(4)}</Strings>
+            <Strings fret={Number(chord.strings[5])} string="181px">{formatFingering(5)}</Strings>
+            </Chords>
+    
+            <Notes>
+              {chord.tones.map((tone, i) => (
+                <div key={i} className="notes">{tone}</div>
+              ))}
+            </Notes>
+          </>
+        ) :
+        (
+          <p>Nenhum acorde identificado</p>
+        )
+      }
+     
     </Container>
   );
 };

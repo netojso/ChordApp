@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, {css} from "styled-components";
 
 import chord from "./assets/chord.png";
 
@@ -9,16 +9,18 @@ interface StringProps {
 
 const Container = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 88vh;
   background-color: #e4d4a4;
 
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   flex-direction: column;
 
   margin: 0px auto;
   overflow: hidden;
+
+  box-sizing: border-box;
 `;
 
 const InputValue = styled.input`
@@ -34,7 +36,7 @@ const InputValue = styled.input`
     outline-style: none;
   }
 
-  margin-bottom: 20px;
+  margin: 40px;
   padding: 10px;
 `;
 
@@ -51,7 +53,7 @@ const Strings = styled.div<StringProps>`
   position: absolute;
 
   top: ${(props) => {
-    if (props.fret === 0) return "-558px";
+    if (props.fret === 0 || isNaN(props.fret)) return "30px";
     if (props.fret === 1) return "75px";
     if (props.fret === 2) return "120px";
     if (props.fret === 3) return "165px";
@@ -60,18 +62,48 @@ const Strings = styled.div<StringProps>`
 
   left: ${props => props.string};
 
-  width: 25px;
-  height: 25px;
+  width: ${props => props.fret === 0 ? "20px" : "25px"};
+  height:${props => props.fret === 0 ? "20px" : "25px"};
   border-radius: 50%;
-  background: #000;
+  background: ${props => props.fret === 0 ? "#FFF" : "#000"};
+
+  border: 1px solid #000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #FFF;
+  font-size: 15px;
+  font-weight: bold;
+
+  ${props => isNaN(props.fret) && css`
+
+     :after {
+        position:absolute;
+        font-size: 45px;
+        content: "\\d7";
+        color:#000;
+        font-weight:bold;
+        top: -15px;
+        left: 0px;
+      }
+
+    background: transparent;
+    border: none;
+
+
+  `}
 `;
 
 const Notes = styled.div`
   display: flex;
-  margin-top: 20px;
+  margin-top: 40px;
   .notes {
-    width: 30px;
-    height: 30px;
+    width: 45px;
+    height: 45px;
+    border-radius: 6px;
+
     background-color: #fff;
 
     display: flex;
@@ -83,7 +115,7 @@ const Notes = styled.div`
 
     border: 1px solid #CC6D31;
     color: #CC6D31;
-    margin: 0px 10px;
+    margin: 0px 6px;
   }
 `;
 
