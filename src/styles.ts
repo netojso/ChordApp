@@ -9,7 +9,7 @@ interface StringProps {
 
 const Container = styled.div`
   width: 100%;
-  height: 88vh;
+  height: 100vh;
   background-color: #e4d4a4;
 
   display: flex;
@@ -21,23 +21,44 @@ const Container = styled.div`
   overflow: hidden;
 
   box-sizing: border-box;
+
+  * {
+    font-family: "Quicksand", sans-serif;
+    }
+
+  p.message {  
+    width: 60%;
+    font-size: 22px;
+    text-align: center;
+    font-weight: 600;
+    color: #CC6D31;
+  }
 `;
 
 const InputValue = styled.input`
   width: 70%;
 
   font-size: 15px;
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-weight: 300;
   text-align: center;
 
   border: 0px;
   border-radius: 6px;
+
   :focus {
     outline-style: none;
   }
 
   margin: 40px;
   padding: 10px;
+
+  color: #CC6D31;
+  font-weight: 600;
+
+  &::placeholder {
+    color: #CC6D31;
+    font-weight: 300;
+  }
 `;
 
 const Chords = styled.div`
@@ -47,6 +68,23 @@ const Chords = styled.div`
   background-size: cover;
   background-repeat: no-repeat;
   position: relative;
+`;
+
+const StartFretNumber = styled.p<{fret: number}>`
+  position: absolute;
+  margin: 0;
+
+  top: ${(props) => {
+    if(props.fret < 2) return "-10900px"
+    if (props.fret >= 2) return "72px";
+
+  }};
+
+
+  left: 25px;
+
+  font-size: 25px;
+
 `;
 
 const Strings = styled.div<StringProps>`
@@ -85,7 +123,7 @@ const Strings = styled.div<StringProps>`
         content: "\\d7";
         color:#000;
         font-weight:bold;
-        top: -15px;
+        top: -20px;
         left: 0px;
       }
 
@@ -119,4 +157,4 @@ const Notes = styled.div`
   }
 `;
 
-export { Container, InputValue, Chords, Notes, Strings };
+export { Container, InputValue, Chords, Notes, StartFretNumber, Strings };
