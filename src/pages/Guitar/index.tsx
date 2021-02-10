@@ -8,7 +8,7 @@ import {
   Strings,
 } from "./styles";
 
-import API from "../../API/api";
+import API from "../../services/api";
 import { Chord, ResponseChordAPI } from "../../@types";
 import formatStringsChord from "../../utils/formatStringsChord";
 import formatSearchChord from "../../utils/formatSearchChord";
