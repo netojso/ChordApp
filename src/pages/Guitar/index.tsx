@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Container, InputValue, Chords, Notes, StartFretNumber, Strings } from "./styles";
+import { Container, InputValue, Chords, Notes, StartFretNumber, Strings, Button } from "./styles";
+import Skeleton from 'react-loading-skeleton';
 
 import API from "../../services/api";
 import { Chord, ResponseChordAPI } from "../../@types";
@@ -10,6 +11,7 @@ import { playChord } from "../../playchord";
 
 const App: React.FC = () => {
   const [chord, setChord] = useState({} as Chord);
+  const [openGuitar, setOpenGuitar] = useState(false);
   const [chordName, setChordName] = useState("");
   const [message, setMessage] = useState("");
   const [startFretNumber, setStartFretNumber] = useState(0);
@@ -37,8 +39,9 @@ const App: React.FC = () => {
         }
 
         setChord(newChord);
+        setOpenGuitar(true)
       } else {
-        setChord({} as Chord);
+        setOpenGuitar(false)
         setMessage("Não encontramos esse acorde! Verifique se digitou corretamente.");
       }
     }
@@ -46,11 +49,11 @@ const App: React.FC = () => {
     fetchChordAPI();
   }, [chordName]);
 
+
   function getStartFretNumber(chord: Chord) {
     let indexFinger = chord.fingering.findIndex((f) => f === 1);
 
     if (indexFinger >= 0) {
-      console.log("startFret", chord.strings[indexFinger]);
       setStartFretNumber(chord.strings[indexFinger]);
     }
   }
@@ -61,9 +64,9 @@ const App: React.FC = () => {
     if (key === "Enter") {
       currentTarget.blur();
 
-      console.log(currentTarget.value);
       let value = formatSearchChord(currentTarget.value);
 
+      setOpenGuitar(false)
       setChordName(value);
     }
   }
@@ -76,7 +79,7 @@ const App: React.FC = () => {
           searchChord(e);
         }}
       />
-      {Object.keys(chord).length !== 0 ? (
+      {openGuitar ? (
         <>
           <Chords>
             <StartFretNumber fret={startFretNumber}>{startFretNumber}</StartFretNumber>
@@ -111,13 +114,13 @@ const App: React.FC = () => {
       ) : (
         <p className="message">{message}</p>
       )}
-      <button
+      <Button
         onClick={() => {
           playChord(chord.strings);
         }}
       >
-        Play
-      </button>
+        Play Chord
+      </Button>
       {/* {chordName !== "" && <audio src={`https://www.scales-chords.com/chord-sounds/snd-guitar-chord-${chordName}.mp3`} controls></audio>} */}
     </Container>
   );

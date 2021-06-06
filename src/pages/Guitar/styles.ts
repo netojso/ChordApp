@@ -42,7 +42,7 @@ const Container = styled.div`
     }
   }
 
-  @media(min-width: 700px){
+  @media (min-width: 700px) {
     justify-content: center;
   }
 `;
@@ -61,7 +61,6 @@ const InputValue = styled.input`
     outline-style: none;
   }
 
-  margin: 40px;
   padding: 10px;
 
   color: #cc6d31;
@@ -72,7 +71,7 @@ const InputValue = styled.input`
     font-weight: 300;
   }
 
-  @media(min-width: 700px){
+  @media (min-width: 700px) {
     width: 20%;
   }
 `;
@@ -84,6 +83,8 @@ const Chords = styled.div`
   background-size: cover;
   background-repeat: no-repeat;
   position: relative;
+
+  margin: 20px 0px;
 `;
 
 const StartFretNumber = styled.p<{ fret: number }>`
@@ -148,7 +149,6 @@ const Strings = styled.div<StringProps>`
 
 const Notes = styled.div`
   display: flex;
-  margin-top: 40px;
   .notes {
     width: 45px;
     height: 45px;
@@ -168,5 +168,25 @@ const Notes = styled.div`
     margin: 0px 6px;
   }
 `;
+const Button = styled.button`
+  cursor: pointer;
 
-export { Container, InputValue, Chords, Notes, StartFretNumber, Strings };
+  width: 99px;
+  height: 3vh;
+  border-radius: 6px;
+
+  background-color: #fff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: bold;
+  font-size: 15px;
+
+  border: 1px solid #cc6d31;
+  color: #cc6d31;
+  margin: 10px 6px;
+`;
+
+export { Container, InputValue, Chords, Notes, StartFretNumber, Strings, Button };

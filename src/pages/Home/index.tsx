@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 
 import { Container, Header, Button } from "./styles";
 import Logo from "../../assets/logo.png";
-import { FaGuitar, CgPiano } from "react-icons/all";
+import { FaGuitar } from "react-icons/all";
 
 const Home: React.FC = () => {
   const history = useHistory();
@@ -16,8 +16,7 @@ const Home: React.FC = () => {
       <div className="description">
         <p className="welcome">Olá seja bem vindo a ChordApp!</p>
         <p className="extras">
-          Nossa missão é ajudar todos os amantes da musica! <br /> Sabe aquele
-          acorde que você quer aprender ou que você não lembra.
+          Nossa missão é ajudar todos os amantes da musica! <br /> Sabe aquele acorde que você quer aprender ou que você não lembra.
           <br /> Então... aqui voce vai achar!
         </p>
       </div>
@@ -29,10 +28,6 @@ const Home: React.FC = () => {
         >
           <FaGuitar size={18} />
           <p>Violão</p>
-        </Button>
-        <Button>
-          <CgPiano size={18} />
-          <p>Piano</p>
         </Button>
       </div>
     </Container>
