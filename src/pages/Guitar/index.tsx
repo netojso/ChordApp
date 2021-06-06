@@ -1,18 +1,12 @@
 import React, { useEffect, useState } from "react";
-import {
-  Container,
-  InputValue,
-  Chords,
-  Notes,
-  StartFretNumber,
-  Strings,
-} from "./styles";
+import { Container, InputValue, Chords, Notes, StartFretNumber, Strings } from "./styles";
 
 import API from "../../services/api";
 import { Chord, ResponseChordAPI } from "../../@types";
 import formatStringsChord from "../../utils/formatStringsChord";
 import formatSearchChord from "../../utils/formatSearchChord";
 import formatFingering from "../../utils/formatFingering";
+import { playChord } from "../../playchord";
 
 const App: React.FC = () => {
   const [chord, setChord] = useState({} as Chord);
@@ -45,9 +39,7 @@ const App: React.FC = () => {
         setChord(newChord);
       } else {
         setChord({} as Chord);
-        setMessage(
-          "Não encontramos esse acorde! Verifique se digitou corretamente."
-        );
+        setMessage("Não encontramos esse acorde! Verifique se digitou corretamente.");
       }
     }
 
@@ -63,13 +55,8 @@ const App: React.FC = () => {
     }
   }
 
-  function searchChord({
-    currentTarget,
-    key,
-  }: React.KeyboardEvent<HTMLInputElement>) {
-    currentTarget.value =
-      currentTarget.value.charAt(0).toUpperCase() +
-      currentTarget.value.slice(1);
+  function searchChord({ currentTarget, key }: React.KeyboardEvent<HTMLInputElement>) {
+    currentTarget.value = currentTarget.value.charAt(0).toUpperCase() + currentTarget.value.slice(1);
 
     if (key === "Enter") {
       currentTarget.blur();
@@ -92,9 +79,7 @@ const App: React.FC = () => {
       {Object.keys(chord).length !== 0 ? (
         <>
           <Chords>
-            <StartFretNumber fret={startFretNumber}>
-              {startFretNumber}
-            </StartFretNumber>
+            <StartFretNumber fret={startFretNumber}>{startFretNumber}</StartFretNumber>
             <Strings fret={chord.strings[0]} string="43px">
               {formatFingering(chord, 0)}
             </Strings>
@@ -126,12 +111,14 @@ const App: React.FC = () => {
       ) : (
         <p className="message">{message}</p>
       )}
-      {chordName !== "" && (
-        <audio
-          src={`https://www.scales-chords.com/chord-sounds/snd-guitar-chord-${chordName}.mp3`}
-          controls
-        ></audio>
-      )}
+      <button
+        onClick={() => {
+          playChord(chord.strings);
+        }}
+      >
+        Play
+      </button>
+      {/* {chordName !== "" && <audio src={`https://www.scales-chords.com/chord-sounds/snd-guitar-chord-${chordName}.mp3`} controls></audio>} */}
     </Container>
   );
 };
